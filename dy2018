@@ -1,12 +1,14 @@
+
 import requests
 import time
 import sys,io
 import csv
 import random
 from lxml import etree
+import codecs
 
 #伪装浏览器
-headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'}
+headers = {'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50'}
 #代理ip网站
 ip_url = 'http://www.xicidaili.com/nn/'
 #获取ip数据
@@ -33,23 +35,20 @@ for ips in ip:
 		print(e)
 #在ip列表中随机选择ip
 proxies = {'http':random.choice(ip_list)}
-##将文件写入桌面文件doubanMovie中
-with open(r'C:/Users/AOAO/Desktop/dy2018.csv','w',encoding='gb18030') as f:
+#将文件写入桌面文件doubanMovie中
+with open(r'C:/Users/AOAO/Desktop/dy2018.csv','w') as f:
 	#写入csv文件
 	writer = csv.writer(f)
 	#第一行内容
-	writer.writerow(('标题','日期','详情'))
-	for i in range(302):
-		url = 'https://www.dy2018.com/html/gndy/dyzz/index_{}.html'.format(i*25)
-		data = requests.get(url,headers=headers,proxies=proxies).text
+	writer.writerow(('标题'))
+	for i in range(1,10):
+		url = 'https://www.dytt8.net/html/gndy/dyzz/list_23_{}.html'.format(i)
+		print(url)
+		data = requests.get(url,headers=headers,proxies=proxies).content.decode(encoding="gbk", errors="ignore")
 		s = etree.HTML(data)
-		movie = s.xpath('//*[@id="header"]/div/div[3]/div[6]/div[2]/div[2]')
-		time.sleep(1)
-		for div in movie:
-			name = div.xpath('./div[2]/ul/table/tr[2]/td[2]/b/a/text()')
-			score = div.xpath('./div[2]/ul/table/tr[3]/td[2]/font/text()')
-			scribe = div.xpath('./div[2]/ul/table/tr[4]/td[2]/font/text()')
-
-			keyword = ['国产']
-			if all(string not in name for string in keyword):
-				f.write("{},{},{}\n".format(name,score,score))
+		movie = s.xpath("//table[@class='tbspan']//a/text()")
+		f.write("{}\n".format(movie))
+		# for div in movie:
+		# 	name = div.xpath("")
+		# 	f.write("{}\n".format(name))
+		# 	print(name)
