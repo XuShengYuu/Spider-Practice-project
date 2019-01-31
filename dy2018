@@ -41,14 +41,13 @@ with open(r'C:/Users/AOAO/Desktop/dy2018.csv','w') as f:
 	writer = csv.writer(f)
 	#第一行内容
 	writer.writerow(('标题'))
-	for i in range(1,10):
+	for i in range(1,189):
 		url = 'https://www.dytt8.net/html/gndy/dyzz/list_23_{}.html'.format(i)
 		print(url)
 		data = requests.get(url,headers=headers,proxies=proxies).content.decode(encoding="gbk", errors="ignore")
-		s = etree.HTML(data)
+		s = etree.HTML(data) 
 		movie = s.xpath("//table[@class='tbspan']//a/text()")
-		f.write("{}\n".format(movie))
-		# for div in movie:
-		# 	name = div.xpath("")
-		# 	f.write("{}\n".format(name))
-		# 	print(name)
+		time.sleep(1)
+		for name in movie:
+			print(name)
+			f.write("{}\n".format(name))
