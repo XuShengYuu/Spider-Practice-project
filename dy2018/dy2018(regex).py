@@ -40,18 +40,33 @@ with open(r'C:/Users/AOAO/Desktop/dy2018.csv','w') as f:
 	writer = csv.writer(f)
 	#第一行内容
 	writer.writerow(('链接','标题'))
+	#循环所有页面
 	for i in range(1,303):
-		url = 'https://www.dy2018.com/html/gndy/dyzz/index_{}.html'.format(i)
-		print(url)
+		#如果i为1，则url为https://www.dy2018.com/html/gndy/dyzz/index.html
+		if i==1:
+			url = 'https://www.dy2018.com/html/gndy/dyzz/index.html'
+		#如果i不等于1，则url为https://www.dy2018.com/html/gndy/dyzz/index_{}.html'.format(i)
+		else:
+			url = 'https://www.dy2018.com/html/gndy/dyzz/index_{}.html'.format(i)
+		# print(url)
+		#获取网页内容
 		data = requests.get(url,headers=headers,proxies=proxies).content.decode(encoding="gbk", errors="ignore")
-		# s = etree.HTML(data) 
-		# movie = s.xpath("//*[@id='header']//div[@class='bd3r']//table[@class='tbspan']/tr[2]/td[2]/b/a/text()")
-		pattern = re.compile('<ul.*?tbspan.*?href="(.*?)".*?title="(.*?)".*?</ul>',re.S)
+		#print(data)
+		#用正则表达式获取链接和标题，并将正则字符串编译成正则表达式对象
+		pattern = re.compile('<table.*?tbspan.*?href="(.*?)".*?title="(.*?)".*?</table>',re.S)
+		#搜索字符串，以列表形式返回全部能匹配的子串。
 		results =re.findall(pattern, data) 
+		# print(results)
+		#等待一秒，防止爬虫过快
 		time.sleep(1)
+		#设置过滤关键词
 		keyword = ['国产']
+		#循环整个results，将列表数据单独取出
 		for result in results:
+			#为url和name赋值
 			url,name = result
+			#如果不含有关键词“国产”，则写入数据
 			if all(string not in name for string in keyword) :
-				print(name)
-				f.write("{},{}\n".format(url,name))
+				# print(url,name)
+				#写入数据
+				f.write("{},{}\n".format('https://www.dy2018.com'+url,name))
