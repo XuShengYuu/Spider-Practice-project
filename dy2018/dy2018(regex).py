@@ -35,7 +35,7 @@ for ips in ip:
 #在ip列表中随机选择ip
 proxies = {'http':random.choice(ip_list)}
 #将文件写入桌面文件doubanMovie中
-with open(r'C:/Users/AOAO/Desktop/dy2018.csv','w') as f:
+with open(r'C:/Users/AOAO/Desktop/dy2018(regex).csv','w') as f:
 	#写入csv文件
 	writer = csv.writer(f)
 	#第一行内容
@@ -48,7 +48,8 @@ with open(r'C:/Users/AOAO/Desktop/dy2018.csv','w') as f:
 		#如果i不等于1，则url为https://www.dy2018.com/html/gndy/dyzz/index_{}.html'.format(i)
 		else:
 			url = 'https://www.dy2018.com/html/gndy/dyzz/index_{}.html'.format(i)
-		# print(url)
+		print('正在抓取第{}页'.format(i))
+		print(url)
 		#获取网页内容
 		data = requests.get(url,headers=headers,proxies=proxies).content.decode(encoding="gbk", errors="ignore")
 		#print(data)
