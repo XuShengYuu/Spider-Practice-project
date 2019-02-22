@@ -17,9 +17,19 @@ NEWSPIDER_MODULE = 'dy2018_scrapy.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'dy2018_scrapy (+http://www.yourdomain.com)'
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
+FEED_URI = u'file:///E://dy2018.csv'
+FEED_FORMAT = 'CSV'
+FEED_EXPORT_ENCODING = 'gb2312'
+DOWNLOADER_MIDDLEWARES = {
+     'douban.middlewares.DoubanSpiderMiddleware': 543,
+     'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware':None,
+     'douban.middlewares.ProxyMiddleWare':125,
+     'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware':None
+}
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -52,9 +62,9 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'dy2018_scrapy.middlewares.Dy2018ScrapyDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   'dy2018_scrapy.middlewares.Dy2018ScrapyDownloaderMiddleware': None,
+}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
